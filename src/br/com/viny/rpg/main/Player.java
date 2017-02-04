@@ -7,15 +7,25 @@ public class Player {
     private int attack;
     private int attackInterval;
     private double armor;
-    private double blockBonus;
 
-    public Player(String name, int hitpoint, int attack, double armor, double blockBonus) {
+    //Damage
+    private double blockBase;
+    private double blockBonus;
+    private double blockPercent;
+    private double reducedBase;
+    private double reducedPercent;
+
+    public Player(String name, int hitpoint, int attack) {
         this.name = name;
         this.hitpoint = hitpoint;
         this.attack = attack;
         this.attackInterval = (int) (attack * 0.5);
         this.armor = armor;
-        this.blockBonus = blockBonus;
+        this.blockBase = 15;
+        this.blockBonus = 0;
+        this.blockPercent = this.blockBase + this.blockBonus;
+        this.reducedBase = 0;
+        this.reducedPercent = this.reducedBase + this.armor;
     }
 
     public String getName() {
@@ -58,12 +68,48 @@ public class Player {
         this.armor = armor;
     }
 
+    public double getBlockBase() {
+        return blockBase;
+    }
+
+    public void setBlockBase(double blockBase) {
+        this.blockBase = blockBase;
+    }
+
     public double getBlockBonus() {
         return blockBonus;
     }
 
-    public void setBlockBonus(int blockBonus) {
+    public void setBlockBonus(double blockBonus) {
         this.blockBonus = blockBonus;
+    }
+
+    public double getBlockPercent() {
+        return blockPercent;
+    }
+
+    public void setBlockPercent(double blockBonus) {
+        this.blockPercent = this.blockBase + blockBonus;
+    }
+
+    public double getReducedPercent() {
+        return reducedPercent;
+    }
+
+    public void setReducedPercent() {
+        double reduced = this.reducedBase + this.armor;
+        if ((this.reducedBase + this.armor) > 50) {
+            reduced = 50;
+        }
+        this.reducedPercent = 0.01 * reduced;
+    }
+
+    public double getReducedBase() {
+        return reducedBase;
+    }
+
+    public void setReducedBase(double reducedBase) {
+        this.reducedBase = reducedBase;
     }
 
 }
