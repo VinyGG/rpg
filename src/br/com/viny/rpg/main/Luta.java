@@ -12,11 +12,18 @@ public class Luta {
         p2.setReducedPercent();
         double hitReduced = (hitVar * p2.getReducedPercent());
         double hit = (hitVar - hitReduced);
-        hit = (int) hit;
+        double criticalA;
+
+        if (criticalChance(p1.getCriticalPercent())) {
+            boolean critical = true;
+            System.out.println("| CRITICAL!");
+            hit = hit + (hit * (0.01 * p1.getCriticalAmount()));
+        }
         if (hit <= 0) {
             hit = 0;
         }
-        System.out.println("| ATTACK: " + p1.getAttack() + " | ARMOR: " + p2.getArmor() + " | HitVar " + hitVar + " | HitReduced: " + hitReduced + " | ReducedPercent: " + p2.getReducedPercent() + " | BlockPercent: " + p2.getBlockPercent());
+        hit = (int) hit;
+        System.out.println("| ATTACK: " + p1.getAttack() + " | ARMOR: " + p2.getArmor() + " | HitVar " + hitVar + " | CRITICAL BONUS: " + p1.getCriticalAmount() + " | HitReduced: " + hitReduced + " | ReducedPercent: " + p2.getReducedPercent() + " | BlockPercent: " + p2.getBlockPercent());
         System.out.println("| HIT: " + hit);
         if (blockChance(p2.getBlockPercent())) {
             System.out.println("| BLOQUEIO: " + p2.getName() + " conseguiu bloquear o ataque de " + hit + " de " + p1.getName());
@@ -31,6 +38,16 @@ public class Luta {
         double num = rd.nextInt(99) + 1;
         //System.out.println("BLOCK NUMBER: " + num);
         if (num <= BlockPercent) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean criticalChance(double criticalPercent) {
+        double num = rd.nextInt(99) + 1;
+        //System.out.println("BLOCK NUMBER: " + num);
+        if (num <= criticalPercent) {
             return true;
         } else {
             return false;

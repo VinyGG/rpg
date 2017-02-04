@@ -8,12 +8,17 @@ public class Player {
     private int attackInterval;
     private double armor;
 
-    //Damage
+    //Def Damage
     private double blockBase;
     private double blockBonus;
     private double blockPercent;
     private double reducedBase;
     private double reducedPercent;
+
+    private double criticalBase;
+    private double criticalBonus;
+    private double criticalAmount;
+    private double criticalPercent;
 
     public Player(String name, int hitpoint, int attack) {
         this.name = name;
@@ -21,6 +26,10 @@ public class Player {
         this.attack = attack;
         this.attackInterval = (int) (attack * 0.5);
         this.armor = armor;
+        this.criticalBase = 10;
+        this.criticalBonus = 0;
+        this.criticalAmount = 50;
+        this.criticalPercent = this.criticalBase + this.criticalBonus;
         this.blockBase = 15;
         this.blockBonus = 0;
         this.blockPercent = this.blockBase + this.blockBonus;
@@ -110,6 +119,38 @@ public class Player {
 
     public void setReducedBase(double reducedBase) {
         this.reducedBase = reducedBase;
+    }
+
+    public double getCriticalBase() {
+        return criticalBase;
+    }
+
+    public void setCriticalBase(double criticalBase) {
+        this.criticalBase = criticalBase;
+    }
+
+    public double getCriticalBonus() {
+        return criticalBonus;
+    }
+
+    public void setCriticalBonus(double criticalBonus) {
+        this.criticalBonus = criticalBonus;
+    }
+
+    public double getCriticalAmount() {
+        return criticalAmount;
+    }
+
+    public void setCriticalAmount(double criticalAmount) {
+        this.criticalAmount = criticalAmount;
+    }
+
+    public double getCriticalPercent() {
+        return criticalPercent;
+    }
+
+    public void setCriticalPercent(double criticalPercent) {
+        this.criticalPercent = criticalPercent;
     }
 
 }
