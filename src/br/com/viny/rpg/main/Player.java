@@ -2,38 +2,56 @@ package br.com.viny.rpg.main;
 
 public class Player {
 
+    Settings settings = new Settings();
+
     private String name;
     private int hitpoint;
-    private int attack;
-    private int attackInterval;
-    private double armor;
 
-    //Def Damage
+    private double attackBase;
+    private double attackBonus;
+    private double attack;
+    private double attackInterval;
+
+    private double accuracyBase;
+    private double accuracyBonus;
+    private double accuracyPercent;
+    private double accuracyPDecimal;
+
     private double blockBase;
     private double blockBonus;
     private double blockPercent;
+    private double blockPDecimal;
+
     private double reducedBase;
+    private double armor;
     private double reducedPercent;
+    private double reducedPDecimal;
 
     private double criticalBase;
     private double criticalBonus;
     private double criticalAmount;
     private double criticalPercent;
+    private double criticalADecimal;
 
-    public Player(String name, int hitpoint, int attack) {
+    public Player(String name) {
         this.name = name;
-        this.hitpoint = hitpoint;
-        this.attack = attack;
-        this.attackInterval = (int) (attack * 0.5);
-        this.armor = armor;
-        this.criticalBase = 10;
-        this.criticalBonus = 0;
-        this.criticalAmount = 50;
+        this.hitpoint = settings.getHit_Point_Base();
+        this.attackBase = settings.getAttack_Base();
+        this.attackBonus = settings.getAttack_Bonus();
+        this.attack = this.attackBonus + this.attackBase;
+        this.attackInterval = (int) (attack * settings.getAttack_Interval_Percent());
+        this.accuracyBase = settings.getAccuracy_Base();
+        this.accuracyBonus = settings.getAccuracy_Bonus();
+        this.accuracyPercent = settings.getAccuracy_Percent();
+        this.criticalBase = settings.getCritical_Base();
+        this.criticalBonus = settings.getCritical_Bonus();
+        this.criticalAmount = settings.getCritical_Amout();
         this.criticalPercent = this.criticalBase + this.criticalBonus;
-        this.blockBase = 15;
-        this.blockBonus = 0;
+        this.blockBase = settings.getBlock_Base();
+        this.blockBonus = settings.getBlock_Bonus();
         this.blockPercent = this.blockBase + this.blockBonus;
-        this.reducedBase = 0;
+        this.reducedBase = settings.getReduced_Base();
+        this.armor = settings.getArmor();
         this.reducedPercent = this.reducedBase + this.armor;
     }
 
@@ -53,20 +71,103 @@ public class Player {
         this.hitpoint = hitpoint;
     }
 
-    public int getAttack() {
+    public double getAttackBase() {
+        return attackBase;
+    }
+
+    public void setAttackBase(int attackBase) {
+        this.attackBase = attackBase;
+    }
+
+    public double getAttackBonus() {
+        return attackBonus;
+    }
+
+    public void setAttackBonus(int attackBonus) {
+        this.attackBonus = attackBonus;
+        setAttack();
+    }
+
+    public double getAttack() {
         return attack;
     }
 
-    public void setAttack(int attack) {
-        this.attack = attack;
+    public void setAttack() {
+        this.attack = this.attackBonus + this.attackBase;
     }
 
-    public int getAttackInterval() {
+    public double getAccuracyPDecimal() {
+        setAccuracyPercent();
+        accuracyPDecimal = accuracyPercent * 0.01;
+        return accuracyPDecimal;
+    }
+
+    public void setAccuracyPDecimal(double accuracyPDecimal) {
+        this.accuracyPDecimal = accuracyPDecimal;
+    }
+
+    public double getBlockPDecimal() {
+        setBlockPercent();
+        blockPDecimal = blockPercent * 0.01;
+        return blockPDecimal;
+    }
+
+    public void setBlockPDecimal(double blockPDecimal) {
+        this.blockPDecimal = blockPDecimal;
+    }
+
+    public double getReducedPDecimal() {
+        setReducedPercent();
+        reducedPDecimal = reducedPercent * 0.01;
+        return reducedPDecimal;
+    }
+
+    public void setReducedPDecimal(double reducedPDecimal) {
+        this.reducedPDecimal = reducedPDecimal;
+    }
+
+    public double getCriticalADecimal() {
+        setCriticalPercent();
+        criticalADecimal = criticalAmount * 0.01;
+        return criticalADecimal;
+    }
+
+    public void setCriticalPDecimal(double criticalPDecimal) {
+        this.criticalADecimal = criticalPDecimal;
+    }
+
+    public double getAttackInterval() {
         return attackInterval;
     }
 
     public void setAttackInterval(int attackInterval) {
         this.attackInterval = attackInterval;
+    }
+
+    public double getAccuracyBase() {
+        return accuracyBase;
+    }
+
+    public void setAccuracyBase(double accuracyBase) {
+        this.accuracyBase = accuracyBase;
+    }
+
+    public double getAccuracyBonus() {
+        return accuracyBonus;
+    }
+
+    public void setAccuracyBonus(double accuracyBonus) {
+        this.accuracyBonus = accuracyBonus;
+        setAccuracyPercent();
+    }
+
+    public double getAccuracyPercent() {
+        setAccuracyPercent();
+        return accuracyPercent;
+    }
+
+    public void setAccuracyPercent() {
+        this.accuracyPercent = this.accuracyBase + this.accuracyBonus;
     }
 
     public double getArmor() {
@@ -75,6 +176,7 @@ public class Player {
 
     public void setArmor(double armor) {
         this.armor = armor;
+        setReducedPercent();
     }
 
     public double getBlockBase() {
@@ -91,14 +193,15 @@ public class Player {
 
     public void setBlockBonus(double blockBonus) {
         this.blockBonus = blockBonus;
+        setBlockPercent();
     }
 
     public double getBlockPercent() {
         return blockPercent;
     }
 
-    public void setBlockPercent(double blockBonus) {
-        this.blockPercent = this.blockBase + blockBonus;
+    public void setBlockPercent() {
+        this.blockPercent = this.blockBase + this.blockBonus;
     }
 
     public double getReducedPercent() {
@@ -107,10 +210,10 @@ public class Player {
 
     public void setReducedPercent() {
         double reduced = this.reducedBase + this.armor;
-        if ((this.reducedBase + this.armor) > 50) {
-            reduced = 50;
+        if ((this.reducedBase + this.armor) > 75) {
+            reduced = 75;
         }
-        this.reducedPercent = 0.01 * reduced;
+        this.reducedPercent = reduced;
     }
 
     public double getReducedBase() {
@@ -135,6 +238,7 @@ public class Player {
 
     public void setCriticalBonus(double criticalBonus) {
         this.criticalBonus = criticalBonus;
+        setCriticalPercent();
     }
 
     public double getCriticalAmount() {
@@ -146,11 +250,19 @@ public class Player {
     }
 
     public double getCriticalPercent() {
+        setCriticalPercent();
         return criticalPercent;
     }
 
-    public void setCriticalPercent(double criticalPercent) {
-        this.criticalPercent = criticalPercent;
+    public void setCriticalPercent() {
+        this.criticalPercent = this.criticalBase + this.criticalBonus;
     }
 
+    public Settings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(Settings settings) {
+        this.settings = settings;
+    }
 }
