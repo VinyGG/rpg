@@ -168,6 +168,9 @@ public class Player {
 
     public void setAccuracyPercent() {
         this.accuracyPercent = this.accuracyBase + this.accuracyBonus;
+        if (this.accuracyPercent > 75) {
+            this.accuracyPercent = 75;
+        }
     }
 
     public double getArmor() {
@@ -189,6 +192,7 @@ public class Player {
 
     public double getBlockBonus() {
         return blockBonus;
+
     }
 
     public void setBlockBonus(double blockBonus) {
@@ -197,11 +201,15 @@ public class Player {
     }
 
     public double getBlockPercent() {
+        setBlockPercent();
         return blockPercent;
     }
 
     public void setBlockPercent() {
         this.blockPercent = this.blockBase + this.blockBonus;
+        if (this.blockPercent > 75) {
+            this.blockPercent = 75;
+        }
     }
 
     public double getReducedPercent() {
@@ -209,11 +217,10 @@ public class Player {
     }
 
     public void setReducedPercent() {
-        double reduced = this.reducedBase + this.armor;
-        if ((this.reducedBase + this.armor) > 75) {
-            reduced = 75;
+        this.reducedPercent = this.reducedBase + this.armor;
+        if (this.reducedPercent > 50) {
+            this.reducedPercent = 50;
         }
-        this.reducedPercent = reduced;
     }
 
     public double getReducedBase() {
@@ -256,6 +263,9 @@ public class Player {
 
     public void setCriticalPercent() {
         this.criticalPercent = this.criticalBase + this.criticalBonus;
+        if (this.criticalPercent > 50) {
+            this.criticalPercent = 50;
+        }
     }
 
     public Settings getSettings() {
@@ -265,4 +275,10 @@ public class Player {
     public void setSettings(Settings settings) {
         this.settings = settings;
     }
+    
+    public void showInfo(){
+        System.out.println(this.name + " Informações");
+        System.out.println("");
+    }
+    
 }

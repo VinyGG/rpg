@@ -6,7 +6,7 @@ public class Fight {
 
     Random rd = new Random();
 
-    public void Attack(Player p1, Player p2) {
+    public void attack(Player p1, Player p2) {
 
         double hitVar = rd.nextInt((int) p1.getAttackInterval()) + (p1.getAttack() - (p1.getAttackInterval() / 2));
         p2.setReducedPercent();
@@ -16,7 +16,7 @@ public class Fight {
 
         if (criticalChance(p1.getCriticalPercent())) {
             criticalVerify = true;
-            hit = hit + (hit * (0.01 * p1.getCriticalAmount()));
+            hit = hit + (hit * (p1.getCriticalADecimal()));
         }
         if (hit <= 0) {
             hit = 0;
@@ -35,8 +35,12 @@ public class Fight {
         }
     }
 
+    public void turn(Player p1, Player p2) {
+        attack(p1, p2);
+    }
+
     public boolean blockChance(double blockPDecimal, double accuracyPDecimal) {
-        double num = rd.nextInt(99) + 1;
+        double num = rd.nextInt(100) + 1;
         System.out.println("| BLOCK NUMBER RANDOM: " + num);
         System.out.println("| BLOCK PERCENT: " + blockPDecimal);
         blockPDecimal = 100 * (blockPDecimal * accuracyPDecimal);
@@ -49,7 +53,7 @@ public class Fight {
     }
 
     public boolean criticalChance(double criticalPercent) {
-        double num = rd.nextInt(99) + 1;
+        double num = rd.nextInt(100) + 1;
         System.out.println("| CRITICAL NUMBER RANDOM: " + num);
         if (num <= criticalPercent) {
             return true;
@@ -63,13 +67,13 @@ public class Fight {
         showInfoBattle(p1, p2);
         do {
             System.out.println("\n ---- " + turn + "º TURNO ----");
-            Attack(p1, p2);
+            attack(p1, p2);
             turn++;
             if (p2.getHitpoint() <= 0) {
                 break;
             }
             System.out.println("\n ---- " + turn + "º TURNO ----");
-            Attack(p2, p1);
+            attack(p2, p1);
             turn++;
         } while (p1.getHitpoint() > 0 && p2.getHitpoint() > 0);
         System.out.println(" ---- FINAL DA BATALHA ----");
@@ -98,7 +102,7 @@ public class Fight {
         System.out.println("|  " + p2.getName() + " ---");
         System.out.println("|  | VIDA: " + (int) p2.getHitpoint() + " - ARMOR: " + (int) p2.getArmor() + " - ATAQUE: " + (int) p2.getAttack() + " - VARIAÇÃO DE ATAQUE: " + (int) p2.getAttackInterval() + "%");
         System.out.println("|  | BLOQUEIO -> BLOCK BASE: " + (int) p2.getBlockBase() + " - BLOCK BONUS: " + (int) p2.getBlockBonus() + " - BLOCK PERCENT: " + (int) p2.getBlockPercent() + "%");
-        System.out.println("|  | REDUÇÃO  -> RECUDED BASE: " + (int) p2.getReducedBase() + " - REDUCED BONUS (ARMOR): " + (int) p1.getArmor() + " - RECUDED PERCENT: " + (int) p2.getReducedPercent() + "%");
+        System.out.println("|  | REDUÇÃO  -> RECUDED BASE: " + (int) p2.getReducedBase() + " - REDUCED BONUS (ARMOR): " + (int) p2.getArmor() + " - RECUDED PERCENT: " + (int) p2.getReducedPercent() + "%");
         System.out.println("|  | CRÍTICO  -> CRITICAL BASE: " + (int) p2.getCriticalBase() + " - CRITICAL BONUS: " + (int) p2.getCriticalBonus() + " - CRITICAL AMOUNT: " + (int) p2.getCriticalAmount() + " - CRITICAL CHANCE: " + (int) p2.getCriticalPercent() + "%");
         System.out.println("|  | ACCURACY -> ACCURACY BASE: " + (int) p2.getAccuracyBase() + " - ACCURACY BONUS: " + (int) p2.getAccuracyBonus() + " - ACCURACY PERCENT: " + (int) p2.getAccuracyPercent() + "%");
         System.out.println("|");
@@ -112,4 +116,5 @@ public class Fight {
         System.out.println("| | HIT REDUZIDO: " + hitReduced);
         System.out.println("| | -> HIT: " + hit);
     }
+
 }
